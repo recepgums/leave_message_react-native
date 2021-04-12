@@ -26,7 +26,13 @@ const DrawerNavigator = createDrawerNavigator({
             // drawerIcon:({tintColor}) => <Feather name="user" size={16} color={tintColor} />
         }
     },
-    HomeScreen,
+    HomeScreen:{
+        screen:HomeScreen,
+        navigationOptions:{
+            title:'Home',
+            // drawerIcon:({tintColor}) => <Feather name="user" size={16} color={tintColor} />
+        }
+    },
     YoutubeScreen,
     Login
 },{

@@ -1,32 +1,49 @@
-import React from "react";
+import React, { Component } from 'react';
 import axios from 'axios';
-import {View,Text} from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import Screen from "./Screen";
-import { Card, ListItem, Button, Icon } from 'react-native-elements'
+import { ListItem, Button, Icon } from 'react-native-elements'
+import Card from '../components/Card';
 
-export  default class HomeScreen extends React.Component{
-    state = {
-        persons: []
-    };
-
+class HomeScreen extends Component {
+    constructor() {
+        super();
+        this.state = {
+            texts: [],
+            files: [],
+        };
+    }
     componentDidMount() {
-        axios.get(`https://jsonplaceholder.typicode.com/users`)
-            .then(res => {
-                const persons = res.data;
-                this.setState({ persons });
+        axios.get(`https://recepgumus.com/api`)
+            .then(response => {
+                this.setState({ texts: response.data.texts, files: response.data.files });
             })
     }
-
+    renderData() {
+        var data = this.state.texts.concat(this.state.files)
+        return data.map((items, Id) =>
+            <Card key={Id} data={items} />
+        );
+    }
     render() {
         return (
-            <Screen navigation={navigation} name="Home">
-                <View>
-                    { this.state.persons.map(person => <Text>
-                        {person.name}
-                    </Text>)}
-                </View>
-            </Screen>
-
+            <View style={{ flex: 1, marginTop: 50, }}>
+                <ScrollView >
+                    <TouchableOpacity style={styles.button}>
+                        <Text bold size={14} color="white">Share Here </Text>
+                    </TouchableOpacity>
+                    {this.renderData()}
+                </ScrollView>
+            </View>
         )
     }
 }
+const styles = StyleSheet.create({
+    file: {
+        alignItems: "center",
+        backgroundColor: "green",
+        padding: 10
+    }
+});
+
+export default HomeScreen;
